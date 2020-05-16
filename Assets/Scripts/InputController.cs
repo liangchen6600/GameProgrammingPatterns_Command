@@ -7,15 +7,20 @@ public class InputController : MonoBehaviour
 {
     public enum KeyType { F,B,L,R }
 
-    public GameObject agent;
+    public GameObject agentCube;
+    public GameObject agentSphere;
     public Button F_Btn;
     public Button B_Btn;
     public Button L_Btn;
     public Button R_Btn;
     public Button undoBtn;
     public Button redoBtn;
+    public Button cubeBtn;
+    public Button sphereBtn;
     public GameObject commandPrefab;
     public RectTransform commandListContent;
+
+    private GameObject agent;
 
     private KeyCode ForwardKey = KeyCode.W;
     private KeyCode BackKey = KeyCode.S;
@@ -79,6 +84,8 @@ public class InputController : MonoBehaviour
 
     private void Awake()
     {
+        agent = agentCube;
+
         F_Btn.onClick.AddListener(() => ChangeKeyCode(KeyType.F));
         B_Btn.onClick.AddListener(() => ChangeKeyCode(KeyType.B));
         L_Btn.onClick.AddListener(() => ChangeKeyCode(KeyType.L));
@@ -86,6 +93,9 @@ public class InputController : MonoBehaviour
 
         undoBtn.onClick.AddListener(Undo);
         redoBtn.onClick.AddListener(Redo);
+
+        cubeBtn.onClick.AddListener(() => agent = agentCube);
+        sphereBtn.onClick.AddListener(() => agent = agentSphere);
 
         UndoStack.ObserveCountChanged().Subscribe(x => undoBtn.interactable = x > 0 ? true : false);
         UndoStack.ObserveRemove().Subscribe(x => RedoStack.Add(x.Value));
